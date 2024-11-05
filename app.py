@@ -13,45 +13,49 @@ st.sidebar.markdown("- **Design Articles**")
 # Main content area
 st.title("ABS Compass Knowledge Base")
 
-# Define tiles for different modules
-modules = [
-    {
-        "title": "Help Guide",
+# Define modules with content for each section
+modules = {
+    "Help Guide": {
         "description": "The Help reference topics cover how the ABS Compass platform works. Learn about all the features you can incorporate into your Knowledgebase.",
-        "icon": "💡"
+        "content": "Detailed information about the Help Guide section goes here..."
     },
-    {
-        "title": "What's New",
+    "What's New": {
         "description": "Learn about the latest features and enhancements available by upgrading to the latest version of ABS Compass.",
-        "icon": "📢"
+        "content": "Information about the latest features and enhancements available in ABS Compass."
     },
-    {
-        "title": "System Administration",
+    "System Administration": {
         "description": "Find installation instructions and other help topics for managing your ABS Compass server.",
-        "icon": "🖥️"
+        "content": "Installation and server management information for System Administration."
     },
-    {
-        "title": "Developers",
+    "Developers": {
         "description": "API reference docs for integrations. Learn how to sync with external systems.",
-        "icon": "👨‍💻"
+        "content": "API documentation, SDK usage, and integration methods for developers."
     },
-    {
-        "title": "Design Articles",
+    "Design Articles": {
         "description": "The design articles show how we solve more in-depth implementation challenges.",
-        "icon": "🧩"
+        "content": "In-depth articles explaining implementation challenges and solutions."
     },
-    {
-        "title": "Standard System Documentation",
+    "Standard System Documentation": {
         "description": "A reference guide to the key features of our standard knowledgebase.",
-        "icon": "📚"
+        "content": "A comprehensive guide to the core features and documentation standards."
     }
-]
+}
 
-# Display tiles
-cols = st.columns(3)
-for index, module in enumerate(modules):
-    with cols[index % 3]:
-        st.markdown(f"### {module['icon']} {module['title']}")
-        st.write(module['description'])
-        st.button("Learn More", key=module['title'])
+# Initialize session state for selected module
+if "selected_module" not in st.session_state:
+    st.session_state.selected_module = None
 
+# Display tiles, making each clickable
+if st.session_state.selected_module is None:
+    cols = st.columns(3)
+    for i, (title, module) in enumerate(modules.items()):
+        with cols[i % 3]:
+            if st.button(f"{title}", key=title):
+                st.session_state.selected_module = title
+            st.write(module['description'])
+else:
+    # Show the selected module's content
+    st.subheader(st.session_state.selected_module)
+    st.write(modules[st.session_state.selected_module]["content"])
+    if st.button("Back to Home"):
+        st.session_state.selected_module = None
