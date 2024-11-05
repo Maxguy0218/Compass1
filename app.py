@@ -50,9 +50,15 @@ if st.session_state.selected_module is None:
     cols = st.columns(3)
     for i, (title, module) in enumerate(modules.items()):
         with cols[i % 3]:
-            if st.button(f"{title}", key=title):
+            # Render a markdown button-like tile with title and description
+            if st.markdown(
+                f'<a href="#" style="text-decoration: none;"><div style="background-color: #f0f0f5; padding: 20px; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);">'
+                f'<h4 style="color: #4c4c4c; margin: 0;">{title}</h4>'
+                f'<p style="color: #7d7d7d; font-size: 0.9em;">{module["description"]}</p></div></a>',
+                unsafe_allow_html=True,
+            ):
                 st.session_state.selected_module = title
-            st.write(module['description'])
+
 else:
     # Show the selected module's content
     st.subheader(st.session_state.selected_module)
